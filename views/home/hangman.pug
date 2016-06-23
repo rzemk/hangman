@@ -1,0 +1,12 @@
+extends ../shared/template
+block content
+  h1 Hangman
+  .content
+    #startNew
+      button#newGame Start Game
+      input#name(type='text')
+    #game
+      input#letter(type='text')
+      button#guessButton Guess
+      table#guesses
+        tr#guessRow
