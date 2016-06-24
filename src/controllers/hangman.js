@@ -21,9 +21,7 @@ router.post('/', (req, res) => {
 
 router.put('/:id', (req, res) => {
   Hangman.findById(req.params.id, (err, hangman) => {
-    console.log('letter',req.body.letter);
     hangman.guesses.push(req.body.letter);
-    console.log('guesses', hangman.guesses);
     hangman.update(hangman, () => {
       hangman.getNewWord();
       res.send({ hangman, bad: hangman.bad });
