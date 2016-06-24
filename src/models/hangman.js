@@ -6,7 +6,7 @@ const Schema = mongoose.Schema;
 
 const hangmanSchema = new Schema({
   name: String,
-  guesses: [{ letter: String }],
+  guesses: { type: Array, default: [] },
   timeLeft: Number,
   word: { type: String, default: 'hello' },
   won: { type: Boolean, default: false },
@@ -14,11 +14,29 @@ const hangmanSchema = new Schema({
 });
 
 hangmanSchema.methods.getNewWord = function () {
-  return 'hello';
-};
-
-hangmanSchema.methods.getBlankWork = function () {
-  return [' ', ' ', ' ', ' ', ' '];
+  let i = 0;
+  const a = [];
+  let bad = 0;
+  let win = true;
+  for (i = 0; i < this.word.length; i++) {
+    const letter = this.word.charAt(i);
+    if (this.guesses.find((l) => l === letter.toString())) {
+      a.push(letter);
+    } else {
+      a.push('_');
+      win = false;
+    }
+  }
+  for (i = 0; i < this.guesses.length; i++) {
+    if (a.find(a => !(a === this.guesses[i]))) {
+      bad++;
+    }
+    console.log('weiner', bad);
+  }
+  console.log('win', win);
+  this.bad = bad;
+  this.won = win;
+  this.word = a;
 };
 
 module.exports = mongoose.model('Hangman', hangmanSchema);

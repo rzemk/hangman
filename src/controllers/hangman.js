@@ -1,4 +1,4 @@
-/* eslint-disable new-cap */
+/* eslint-disable new-cap, array-callback-return */
 
 import express from 'express';
 import Hangman from '../models/hangman';
@@ -11,13 +11,24 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res) => {
   // console.log('here');
-  Hangman.newMethod();
+  // Hangman.newMethod();
   const hang = new Hangman(req.body);
   hang.save(() => {
+    hang.getNewWord();
     res.send({ hang });
   });
 });
 
-router.put('/', (req, res) => {
-  res.render('home/hangman');
+router.put('/:id', (req, res) => {
+  Hangman.findById(req.params.id, (err, hangman) => {
+    console.log('letter',req.body.letter);
+    hangman.guesses.push(req.body.letter);
+    console.log('guesses', hangman.guesses);
+    hangman.update(hangman, () => {
+      hangman.getNewWord();
+      console.log('put hm', hangman);
+      console.log('asdf', hangman.bad);
+      res.send(hangman);
+    });
+  });
 });

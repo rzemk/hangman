@@ -2,11 +2,19 @@ extends ../shared/template
 block content
   h1 Hangman
   .content
+    #gameid
     #startNew
       button#newGame Start Game
       input#name(type='text')
+      p
+      p
     #game
-      input#letter(type='text')
+      p
+      p
+      input#letter(type='text' MaxLength=1)
       button#guessButton Guess
-      table#guesses
-        tr#guessRow
+      #guesslabel Guesses:
+      #guesses
+      #word
+      #pic
+    #win Congratulations!! You won!
