@@ -26,9 +26,7 @@ router.put('/:id', (req, res) => {
     console.log('guesses', hangman.guesses);
     hangman.update(hangman, () => {
       hangman.getNewWord();
-      console.log('put hm', hangman);
-      console.log('asdf', hangman.bad);
-      res.send(hangman);
+      res.send({ hangman, bad: hangman.bad });
     });
   });
 });

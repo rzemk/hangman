@@ -14,41 +14,23 @@ const hangmanSchema = new Schema({
 });
 
 hangmanSchema.methods.getNewWord = function () {
-  let i = 0;
-  const a = [];
+  let a = '';
   let bad = 0;
   let win = true;
-  for (i = 0; i < this.word.length; i++) {
-    const letter = this.word.charAt(i);
-    if (this.guesses.find((l) => l === letter.toString())) {
-      a.push(letter);
+  for (let i = 0; i < this.word.length; i++) {
+    if (this.guesses.find((l) => l === this.word[i])) {
+      a = a.concat(this.word[i], ' ');
     } else {
-      a.push('_');
+      a = a.concat('_ ');
       win = false;
     }
   }
-  for (i = 0; i < this.guesses.length; i++) {
-    if (a.find(a => !(a === this.guesses[i]))) {
-      bad++;
-    }
-    console.log('weiner', bad);
-  }
-  console.log('win', win);
+  // get count of bad guesses
+  bad = this.guesses.filter((v) => !(this.word.indexOf(v) + 1)).length;
+  this.guesses = this.guesses.join(' ');
   this.bad = bad;
   this.won = win;
   this.word = a;
 };
 
 module.exports = mongoose.model('Hangman', hangmanSchema);
-
-
-/*
-Dictionary.getNewWord() {
-  // read from source (dictionary)
-  return 'hello';
-}
-
-Dictionary.blank = function () {
-  return
-}
-*/
